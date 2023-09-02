@@ -4,7 +4,7 @@ import com.example.newsapp.domain.model.Article
 
 data class NewsScreenState(
     val isLoading: Boolean = false,
-    val article: List<Article> = emptyList(),
+    val articles: List<Article> = emptyList(),
     val error: String? = null,
     val isSearchBarVisible: Boolean = false,
     val selectedArticle: Article? = null,
