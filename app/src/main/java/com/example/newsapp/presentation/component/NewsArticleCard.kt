@@ -18,7 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.example.newsapp.domain.model.Article
-import com.example.newsapp.utils.DateFormatter
+import com.example.newsapp.utils.dateFormatter
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -27,7 +27,7 @@ fun NewsArticleCard(
     article: Article,
     onCardClicked: (Article) -> Unit,
 ) {
-    val date = DateFormatter(article.publishedAt)
+    val date = dateFormatter(article.publishedAt)
 
     Card(modifier = modifier.clickable {
         onCardClicked(article)

@@ -8,7 +8,7 @@ import java.time.format.FormatStyle
 import java.util.Locale
 
 @RequiresApi(Build.VERSION_CODES.O)
-fun DateFormatter(inputDateTime: String?): String {
+fun dateFormatter(inputDateTime: String?): String {
     val inputFormatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME
     val outputFormatter = DateTimeFormatter
         .ofLocalizedDate(FormatStyle.LONG)
