@@ -1,5 +1,7 @@
 package com.example.newsapp.presentation.component
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -16,13 +18,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.example.newsapp.domain.model.Article
+import com.example.newsapp.utils.dateFormatter
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun NewsArticleCard(
     modifier: Modifier = Modifier,
     article: Article,
     onCardClicked: (Article) -> Unit,
 ) {
+    val date = dateFormatter(article.publishedAt)
+
     Card(modifier = modifier.clickable {
         onCardClicked(article)
     }) {
@@ -40,7 +46,7 @@ fun NewsArticleCard(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(text = article.source.name ?: "", style = MaterialTheme.typography.bodySmall)
-                Text(text = article.publishedAt ?: "", style = MaterialTheme.typography.bodySmall)
+                Text(text = date, style = MaterialTheme.typography.bodySmall)
             }
         }
     }

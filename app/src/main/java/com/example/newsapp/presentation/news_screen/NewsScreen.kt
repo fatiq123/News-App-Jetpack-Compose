@@ -1,6 +1,7 @@
 package com.example.newsapp.presentation.news_screen
 
 import android.util.Log
+import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -27,8 +28,13 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.unit.dp
 import com.example.newsapp.domain.model.Article
 import com.example.newsapp.presentation.component.BottomSheetContent
@@ -36,16 +42,20 @@ import com.example.newsapp.presentation.component.CategoryTabRow
 import com.example.newsapp.presentation.component.NewsArticleCard
 import com.example.newsapp.presentation.component.NewsScreenTopAppBar
 import com.example.newsapp.presentation.component.RetryContent
+import com.example.newsapp.presentation.component.SearchAppBar
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class,
+    ExperimentalComposeUiApi::class
+)
 @Composable
 fun NewsScreen(
     state: NewsScreenState,
     onEvent: (NewsScreenEvent) -> Unit,
-    onReadFullStoryButtonClicked: (String) -> Unit
-    ) {
+    onReadFullStoryButtonClicked: (String) -> Unit,
+) {
     /*val scrollState = rememberScrollState()
     Column(modifier = Modifier.verticalScroll(scrollState)) {
         Log.d("Response","${viewModel.articles}")
@@ -61,6 +71,10 @@ fun NewsScreen(
         categories.size
     })
 
+
+    val focusRequester = remember { FocusRequester() }
+    val focusManager = LocalFocusManager.current
+    val keyboardController = LocalSoftwareKeyboardController.current
 
     /* this is for bottom sheet */
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
@@ -101,47 +115,74 @@ fun NewsScreen(
     }
 
 
-    Scaffold(
-        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
-        topBar = {
-            NewsScreenTopAppBar(
-                scrollBehavior = scrollBehavior,
-                onSearchIconClicked = {}
-            )
-        }
-    ) { paddingValues ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues = paddingValues)
-        ) {
-            CategoryTabRow(
-                pagerSate = pagerState,
-                categories = categories,
-                onTabSelected = { index ->
-                    coroutineScope.launch {
-                        pagerState.animateScrollToPage(index)
-                    }
+    Column(modifier = Modifier.fillMaxSize()) {
+        Crossfade(targetState = state.isSearchBarVisible, label = "Search") { isVisible ->
+            if (isVisible) {
+                Column {
+                    SearchAppBar(
+                        modifier = Modifier.focusRequester(focusRequester = focusRequester),
+                        value = "",
+                        onInputValueChange = {},
+                        onCloseIconClicked = { onEvent(NewsScreenEvent.OnCloseIconClicked) },
+                        onSearchIconClicked = {
+                            keyboardController?.hide()
+                            focusManager.clearFocus()
+                        }
+                    )
+                    NewsArticleList(
+                        state = state,
+                        onCardClicked = { article ->
+                            shouldBottomSheetShow = true
+                            onEvent(NewsScreenEvent.OnNewsCardClicked(article = article))
+                        },
+                        onRetry = {
+                            onEvent(NewsScreenEvent.OnCategoryChanged(state.category))
+                        },
+                    )
                 }
-            )
-            HorizontalPager(
-                state = pagerState      /*note here we cannot provide pageCount as we already have set pageCount in pagerState*/
-            ) {
-                NewsArticleList(
-                    state = state,
-                    onCardClicked = { article ->
-                        shouldBottomSheetShow = true
-                        onEvent(NewsScreenEvent.OnNewsCardClicked(article = article))
-                    },
-                    onRetry = {
-                        onEvent(NewsScreenEvent.OnCategoryChanged(state.category))
-                    },
-                )
+            } else {
+                Scaffold(
+                    modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+                    topBar = {
+                        NewsScreenTopAppBar(
+                            scrollBehavior = scrollBehavior,
+                            onSearchIconClicked = {
+                                coroutineScope.launch {
+                                    delay(500)
+                                    focusRequester.requestFocus()
+                                }
+                                onEvent(NewsScreenEvent.OnSearchIconClicked)
+                            }
+                        )
+                    }
+                ) { paddingValues ->
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(paddingValues = paddingValues)
+                    ) {
+                        CategoryTabRow(
+                            pagerSate = pagerState,
+                            categories = categories,
+                            onTabSelected = { index ->
+                                coroutineScope.launch {
+                                    pagerState.animateScrollToPage(index)
+                                }
+                            }
+                        )
+                        HorizontalPager(
+                            state = pagerState      /*note here we cannot provide pageCount as we already have set pageCount in pagerState*/
+                        ) {
+
+                        }
+
+                    }
+
+                }
             }
-
         }
-
     }
+
 
 }
 
