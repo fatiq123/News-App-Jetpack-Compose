@@ -38,13 +38,13 @@ fun NewsScreen(
 
     }*/
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
-    val pagerState = rememberPagerState(pageCount = {
-        7
-    })
     val coroutineScope = rememberCoroutineScope()
     val categories = listOf(
         "General", "Business", "Health", "Science", "Sports", "Technology", "Entertainment"
     )
+    val pagerState = rememberPagerState(pageCount = {
+        categories.size
+    })
 
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
@@ -69,11 +69,13 @@ fun NewsScreen(
                     }
                 }
             )
-            HorizontalPager(state = pagerState) {
+            HorizontalPager(
+                state = pagerState      /*note here we cannot provide pageCount as we already have set pageCount in pagerState*/
+            ) {
                 LazyColumn(
                     verticalArrangement = Arrangement.spacedBy(16.dp),
                     contentPadding = PaddingValues(16.dp),
-                    modifier = Modifier.padding(paddingValues = paddingValues)
+                    /*modifier = Modifier.padding(paddingValues = paddingValues)*/
                 ) {
                     items(viewModel.articles) { article ->
                         Log.d("Response", "$article")
@@ -88,3 +90,5 @@ fun NewsScreen(
 
 }
 // 38.50
+// state: Any value that can change during the usage of app
+// event: All the possible actions a user can do
