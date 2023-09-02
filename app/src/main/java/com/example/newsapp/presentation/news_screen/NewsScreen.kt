@@ -28,6 +28,7 @@ import com.example.newsapp.domain.model.Article
 import com.example.newsapp.presentation.component.CategoryTabRow
 import com.example.newsapp.presentation.component.NewsArticleCard
 import com.example.newsapp.presentation.component.NewsScreenTopAppBar
+import com.example.newsapp.presentation.component.RetryContent
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
@@ -90,7 +91,10 @@ fun NewsScreen(
             ) {
                 NewsArticleList(
                     state = state,
-                    onCardClicked = {}
+                    onCardClicked = {},
+                    onRetry = {
+                        onEvent(NewsScreenEvent.OnCategoryChanged(state.category))
+                    },
                 )
             }
 
@@ -105,6 +109,7 @@ fun NewsScreen(
 fun NewsArticleList(
     state: NewsScreenState,
     onCardClicked: (Article) -> Unit,
+    onRetry: () -> Unit,
 ) {
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(16.dp),
@@ -125,6 +130,12 @@ fun NewsArticleList(
     ) {
         if (state.isLoading) {
             CircularProgressIndicator()
+        }
+        if (state.error != null) {
+            RetryContent(
+                error = state.error,
+                onRetry = onRetry
+            )
         }
     }
 }
