@@ -44,7 +44,8 @@ import kotlinx.coroutines.launch
 fun NewsScreen(
     state: NewsScreenState,
     onEvent: (NewsScreenEvent) -> Unit,
-) {
+    onReadFullStoryButtonClicked: (String) -> Unit
+    ) {
     /*val scrollState = rememberScrollState()
     Column(modifier = Modifier.verticalScroll(scrollState)) {
         Log.d("Response","${viewModel.articles}")
@@ -76,6 +77,7 @@ fun NewsScreen(
                     BottomSheetContent(
                         article = it,
                         onReadFullStoryButtonClicked = {
+                            onReadFullStoryButtonClicked(it.url)    // article specific url
                             coroutineScope.launch {
                                 sheetState.hide()
                             }.invokeOnCompletion {
@@ -89,7 +91,7 @@ fun NewsScreen(
     }
 
 
-    /* this is to show data with respected category */
+    /* this is to show data with respected to category */
     LaunchedEffect(key1 = pagerState) {
         snapshotFlow {
             pagerState.currentPage
