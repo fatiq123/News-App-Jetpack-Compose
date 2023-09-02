@@ -18,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.newsapp.data.viewmodels.NewsScreenViewModel
+import com.example.newsapp.presentation.component.NewsArticleCard
 
 @Composable
 fun NewsScreen(
@@ -35,9 +36,7 @@ fun NewsScreen(
     ) {
         items(viewModel.articles) { article ->
             Log.d("Response","$article")
-            Card(modifier = Modifier.fillMaxWidth()) {
-                Text(text = article.title, style = MaterialTheme.typography.bodyMedium)
-            }
+            NewsArticleCard(article = article, onCardClicked = {})
         }
     }
 }
