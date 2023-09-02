@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -46,8 +47,8 @@ fun SearchAppBar(
                 else onCloseIconClicked()
             }) {
                 Icon(
-                    imageVector = Icons.Filled.Search,
-                    contentDescription = "Search Icon",
+                    imageVector = Icons.Filled.Close,
+                    contentDescription = "Close Icon",
                     tint = Color.White
                 )
             }
