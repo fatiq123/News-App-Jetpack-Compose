@@ -1,6 +1,6 @@
-package com.example.newsapp.data
+package com.example.newsapp.domain.repository
 
-import com.example.newsapp.data.models.Article
+import com.example.newsapp.domain.model.Article
 import com.example.newsapp.utils.Resource
 
 interface NewsRepository {

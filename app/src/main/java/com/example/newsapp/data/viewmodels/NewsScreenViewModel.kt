@@ -2,13 +2,11 @@ package com.example.newsapp.data.viewmodels
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.newsapp.data.NewsRepository
-import com.example.newsapp.data.models.Article
-import com.example.newsapp.data.repositories.NewsRepositoryImpl
+import com.example.newsapp.domain.repository.NewsRepository
+import com.example.newsapp.domain.model.Article
 import com.example.newsapp.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch

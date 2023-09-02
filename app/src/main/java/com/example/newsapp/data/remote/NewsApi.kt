@@ -1,17 +1,19 @@
-package com.example.newsapp.data
+package com.example.newsapp.data.remote
 
 import com.example.newsapp.utils.Constants
-import com.example.newsapp.data.models.NewsResponse
+import com.example.newsapp.domain.model.NewsResponse
+import com.example.newsapp.utils.Constants.API_KEY
 import retrofit2.http.GET
 import retrofit2.http.Query
 
-interface Api {
+interface NewsApi {
 
     @GET("top-headlines")
     suspend fun getBreakingNews(
         @Query("category") category: String,
         @Query("country") country: String = "us",
-        @Query("apiKey") apiKey: String = Constants.API_KEY,
-    ) : NewsResponse
+        @Query("apiKey") apiKey: String = API_KEY
+    ): NewsResponse
+
 
 }
