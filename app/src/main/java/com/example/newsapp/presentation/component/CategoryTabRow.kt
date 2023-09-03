@@ -9,7 +9,11 @@ import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.example.newsapp.R
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -25,12 +29,16 @@ fun CategoryTabRow(
         contentColor = MaterialTheme.colorScheme.onPrimaryContainer
     ) {
         categories.forEachIndexed { index, category ->
-            Tab(selected = pagerSate.currentPage == index,
+            Tab(
+                modifier = Modifier.padding(horizontal = 30.dp),
+                selected = pagerSate.currentPage == index,
                 onClick = { onTabSelected(index) },
                 content = {
                     Text(
                         text = category,
-                        modifier = Modifier.padding(vertical = 8.dp, horizontal = 2.dp)
+                        modifier = Modifier.padding(vertical = 8.dp, horizontal = 2.dp),
+                        fontWeight = FontWeight.Bold,
+                        fontFamily = FontFamily(Font(R.font.popins_regular)),   // new
                     )
                 }
             )

@@ -17,6 +17,7 @@ import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 import com.example.newsapp.ui.theme.RoyalBlue
 import com.example.newsapp.ui.theme.Typography
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 /*
 private val DarkColorScheme = darkColorScheme(
@@ -75,15 +76,14 @@ fun NewsAppTheme(
 
 
 private val DarkColorScheme = darkColorScheme(
-    primary = RoyalBlue,
     primaryContainer = Color.Black,
-    onPrimaryContainer = Color.White,
+    onPrimaryContainer = Color.White
 )
 
 private val LightColorScheme = lightColorScheme(
-    primary = RoyalBlue,
-    primaryContainer = Color.Black,
-    onPrimaryContainer = Color.White,
+    primaryContainer = RoyalBlue,
+    onPrimaryContainer = Color.White
+
 )
 
 @Composable
@@ -116,4 +116,16 @@ fun NewsAppTheme(
         typography = Typography,
         content = content
     )
+
+
+    val systemUiController = rememberSystemUiController()
+    if (darkTheme) {
+        systemUiController.setSystemBarsColor(
+            color = Color.Black
+        )
+    } else {
+        systemUiController.setSystemBarsColor(
+            color = RoyalBlue
+        )
+    }
 }
