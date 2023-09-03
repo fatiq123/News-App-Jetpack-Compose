@@ -1,5 +1,7 @@
 package com.example.newsapp.utils
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
@@ -11,6 +13,7 @@ import com.example.newsapp.presentation.article_screen.ArticleScreen
 import com.example.newsapp.presentation.news_screen.NewsScreen
 import com.example.newsapp.presentation.news_screen.viewmodels.NewsScreenViewModel
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun NavGraphSetup(
     navController: NavHostController,

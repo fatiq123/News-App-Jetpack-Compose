@@ -11,6 +11,8 @@ import com.example.newsapp.presentation.news_screen.NewsScreenEvent
 import com.example.newsapp.presentation.news_screen.NewsScreenState
 import com.example.newsapp.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -19,9 +21,9 @@ class NewsScreenViewModel @Inject constructor(
     private val newsRepository: NewsRepository,
 ) : ViewModel() {
 
-    var articles by mutableStateOf<List<Article>>(emptyList())
-
     var state by mutableStateOf(NewsScreenState())
+
+    private var searchJob: Job? = null
 
     fun onEvent(event: NewsScreenEvent) {
         when (event) {
@@ -29,17 +31,28 @@ class NewsScreenViewModel @Inject constructor(
                 state = state.copy(category = event.category)
                 getNewsArticles(category = state.category)
             }
+
             NewsScreenEvent.OnCloseIconClicked -> {
                 state = state.copy(isSearchBarVisible = false)
                 getNewsArticles(category = state.category)
             }
+
             is NewsScreenEvent.OnNewsCardClicked -> {
                 state = state.copy(selectedArticle = event.article)
             }
+
             NewsScreenEvent.OnSearchIconClicked -> {
                 state = state.copy(isSearchBarVisible = true, articles = emptyList())
             }
-            is NewsScreenEvent.OnSearchQueryChanged -> TODO()
+
+            is NewsScreenEvent.OnSearchQueryChanged -> {
+                state = state.copy(searchQuery = event.searchQuery)
+                searchJob?.cancel()
+                searchJob = viewModelScope.launch {
+                    delay(1000)
+                    searchForNews(query = state.searchQuery)
+                }
+            }
         }
     }
 
@@ -51,6 +64,34 @@ class NewsScreenViewModel @Inject constructor(
         viewModelScope.launch {
             state = state.copy(isLoading = true)
             val result = newsRepository.getTopHeadlines(category = category)
+            when (result) {
+                is Resource.Success -> {
+                    state = state.copy(
+                        articles = result.data ?: emptyList(),
+                        isLoading = false,
+                        error = null
+                    )
+                }
+
+                is Resource.Error -> {
+                    state = state.copy(
+                        error = result.message,
+                        isLoading = false,
+                        articles = emptyList()
+                    )
+                }
+            }
+        }
+    }
+
+
+    private fun searchForNews(query: String) {
+        if (query.isEmpty()) {
+            return
+        }
+        viewModelScope.launch {
+            state = state.copy(isLoading = true)
+            val result = newsRepository.searchForNews(query = query)
             when (result) {
                 is Resource.Success -> {
                     state = state.copy(

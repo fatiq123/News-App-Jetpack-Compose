@@ -29,9 +29,11 @@ fun NewsArticleCard(
 ) {
     val date = dateFormatter(article.publishedAt)
 
-    Card(modifier = modifier.clickable {
-        onCardClicked(article)
-    }) {
+    Card(modifier = modifier
+        .clickable {
+            onCardClicked(article)
+        }
+    ) {
         Column(modifier = modifier.padding(12.dp)) {
             ImageHolder(imageUrl = article.urlToImage)
             Text(

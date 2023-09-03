@@ -47,7 +47,7 @@ fun ArticleScreen(
                 title = {
                     Text(text = "Article", fontWeight = FontWeight.Bold)
                 },
-                actions = {
+                navigationIcon = {
                     IconButton(onClick = { onBackPressed() }) {
                         Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "Back")
                     }
