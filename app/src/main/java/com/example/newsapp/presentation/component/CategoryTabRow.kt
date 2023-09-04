@@ -1,6 +1,7 @@
 package com.example.newsapp.presentation.component
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.material3.MaterialTheme
@@ -9,6 +10,7 @@ import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -25,8 +27,10 @@ fun CategoryTabRow(
     ScrollableTabRow(
         selectedTabIndex = pagerSate.currentPage,
         edgePadding = 0.dp,
-        containerColor = MaterialTheme.colorScheme.primaryContainer,
-        contentColor = MaterialTheme.colorScheme.onPrimaryContainer
+        /*containerColor = MaterialTheme.colorScheme.primaryContainer,
+        contentColor = MaterialTheme.colorScheme.onPrimaryContainer*/
+        containerColor = if (isSystemInDarkTheme()) Color(0xFF000000) else Color(0xFF6B9EF3),
+        contentColor = Color.White
     ) {
         categories.forEachIndexed { index, category ->
             Tab(

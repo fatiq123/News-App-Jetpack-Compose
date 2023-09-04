@@ -1,5 +1,6 @@
 package com.example.newsapp.presentation.component
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -58,8 +59,10 @@ fun SearchAppBar(
             onSearch = { onSearchIconClicked() }
         ),
         colors = TextFieldDefaults.colors(
-            focusedContainerColor = MaterialTheme.colorScheme.primaryContainer,
-            unfocusedContainerColor = MaterialTheme.colorScheme.primaryContainer,
+//            focusedContainerColor = MaterialTheme.colorScheme.primaryContainer,
+//            unfocusedContainerColor = MaterialTheme.colorScheme.primaryContainer,
+            focusedContainerColor = if (isSystemInDarkTheme()) Color(0xFF000000) else Color(0xFF6B9EF3),
+            unfocusedContainerColor = if (isSystemInDarkTheme()) Color(0xFF000000) else Color(0xFF6B9EF3),
             cursorColor = Color.White,
             focusedIndicatorColor = Color.White
         )

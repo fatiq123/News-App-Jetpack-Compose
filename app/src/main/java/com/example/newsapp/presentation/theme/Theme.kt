@@ -19,6 +19,7 @@ import androidx.core.view.WindowCompat
 import com.example.newsapp.ui.theme.RoyalBlue
 import com.example.newsapp.ui.theme.Typography
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import kotlinx.coroutines.CoroutineScope
 
 /*
 private val DarkColorScheme = darkColorScheme(
@@ -152,4 +153,5 @@ fun NewsAppTheme(
             color = RoyalBlue
         )
     }
+    
 }
