@@ -2,6 +2,7 @@ package com.example.newsapp.presentation.theme
 
 import android.app.Activity
 import android.os.Build
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
@@ -15,11 +16,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
-import androidx.core.view.WindowCompat
-import com.example.newsapp.ui.theme.RoyalBlue
 import com.example.newsapp.ui.theme.Typography
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
-import kotlinx.coroutines.CoroutineScope
 
 /*
 private val DarkColorScheme = darkColorScheme(
@@ -153,5 +151,7 @@ fun NewsAppTheme(
             color = RoyalBlue
         )
     }
-    
+
 }
+
+
